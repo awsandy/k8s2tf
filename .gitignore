@@ -1,0 +1,7 @@
+*.bak
+terraform*
+*.tf
+.terraform
+generated
+testcases
+t*.sh
