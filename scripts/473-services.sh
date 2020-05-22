@@ -43,12 +43,12 @@ for ns in $ans; do
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
                     if [[ ${tt1} == "load_balancer_ingress" ]];then 
                         skip=1
-                        echo "tt2=$tt2"
+                        #echo "tt2=$tt2"
                         if [[ "$tt2" != "[]" ]]; then
                         while [[ "$t1" != "]" ]] ;do
                             read line
                             t1=`echo "$line"`
-                            echo $t1
+                            #echo $t1
                         done 
                         fi
                     fi
