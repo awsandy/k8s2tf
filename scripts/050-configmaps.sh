@@ -4,10 +4,12 @@ kmaps=`kubectl get configmaps -n kube-system -o json | jq .items[].metadata.name
 for i in $kmaps; do
     echo $i
     cname=`echo $i | tr -d '"'`
-    printf "resource \"%s\" \"%s\" {" $ttft $cname > $ttft.$cname.tf
+    printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $ttft.$cname.tf
     printf "}" $cname >> $ttft.$cname.tf
-    terraform import $ttft.$cname kube-system/$cname
-    terraform state show $ttft.$cname > t2.txt
+    terraform import $ttft.default__kube-bench-node default/kube-bench-node
+    exit
+    #terraform import $ttft.$ns__$cname $ns/$cname
+    terraform state show $ttft.$ns__$cname > t2.txt
     rm $ttft.$cname.tf
     cat t2.txt | perl -pe 's/\x1b.*?[mGKH]//g' > t1.txt
             #	for k in `cat t1.txt`; do

@@ -1,27 +1,31 @@
-pwd
 ttft="kubernetes_job"
-ans=`kubectl get namespaces -o json | jq .items[].metadata.name`
-ans="default"
+ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
+#echo $ans
+#ans="default"
 for ns in $ans; do
-    echo $ns
-    #kubectl get jobs -n $ns -o json
-    comm=`kubectl get jobs -n $ns -o json | jq .items[].metadata.name`
-    #echo "comm=$comm"
-    for i in $comm; do
-    cname=`echo $i | tr -d '"'`
-    echo $cname
-    printf "resource \"%s\" \"%s\" {" $ttft $cname > $ttft.$cname.tf
-    printf "}" $cname >> $ttft.$cname.tf
-    terraform import $ttft.$cname $ns/$cname
-    terraform state show $ttft.$cname > t2.txt
-    rm $ttft.$cname.tf
-    cat t2.txt | perl -pe 's/\x1b.*?[mGKH]//g' > t1.txt
-            #	for k in `cat t1.txt`; do
-            #		echo $k
-            #	done
-    file="t1.txt"
-    fn=`printf "%s__%s.tf" $ttft $cname`
-
+    ns=`echo $ns | tr -d '"'`
+    if [[ "$ns" != kube-* ]]; then
+        echo "namespace = $ns"
+        comm=`kubectl get jobs -n $ns -o json | jq .items[].metadata.name`
+        #echo "comm=$comm"
+        for i in $comm; do
+            cname=`echo $i | tr -d '"'`
+            echo $cname
+            fn=`printf "%s__%s__%s.tf" $ttft $ns $cname`
+            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $fn
+            printf "}\n" >> $fn
+            
+            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $cname $ns $cname`
+            echo $comm
+            eval $comm
+            comm=`printf "terraform state show %s.%s__%s" $ttft $ns $cname`
+            echo $comm
+            eval $comm > t2.txt
+            
+            rm -f $fn
+            cat t2.txt | perl -pe 's/\x1b.*?[mGKH]//g' > t1.txt
+            file="t1.txt"
+            
             while IFS= read line
             do
 				skip=0
@@ -54,7 +58,8 @@ for ns in $ans; do
                 
             done <"$file"
             sed -i .bak 's/<<~/<</g' $fn
-            rm -f *.tf.bak
-    done
+            # -f *.tf.bak
+        done
+    fi
 done
 terraform fmt
