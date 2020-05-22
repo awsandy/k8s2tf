@@ -14,21 +14,17 @@ else
     cp pt.txt processed.txt
 fi
 # write the k8s.tf file
-cd generated/tf.$mycluster
+
 printf "provider \"kubernetes\" {}\n" > k8s.tf
-pwd
-
-
 
 terraform init
 
-pre="4*"
+pre="473*"
 t="*"
 
 date
-pwd
-lc=0
 
+lc=0
 echo "t=$t"
 echo "loop through providers"
 pwd
