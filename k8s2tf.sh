@@ -22,7 +22,7 @@ pwd
 
 terraform init
 
-pre="*"
+pre="4*"
 t="*"
 
 date
