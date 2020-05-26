@@ -1,4 +1,4 @@
-ttft="kubernetes_service_account"
+ttft="kubernetes_horizontal_pod_autoscaler"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
@@ -6,7 +6,7 @@ for ns in $ans; do
     ns=`echo $ns | tr -d '"'`
     if [[ "$ns" != kube-* ]]; then
         echo "namespace = $ns"
-        comm=`kubectl get sa -n $ns -o json | jq .items[].metadata.name`
+        comm=`kubectl get hpa -n $ns -o json | jq .items[].metadata.name`
         #echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
