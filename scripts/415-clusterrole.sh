@@ -40,6 +40,11 @@ ttft="kubernetes_cluster_role"
                     if [[ ${tt1} == "mount_path" ]];then
                         printf "mount_propagation = \"None\"\n" >> $fn
                     fi
+                    if [[ ${tt1} == "api_groups" ]];then
+                        if [[ "$tt2" == "[]" ]]; then
+                            skip=1
+                        fi
+                    fi
 
                 fi
                 if [ "$skip" == "0" ]; then
