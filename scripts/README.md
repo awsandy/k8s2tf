@@ -19,7 +19,7 @@
 * kubernetes_daemonset
 * kubernetes_deployment
 * kubernetes_endpoints
-* kubernetes_ingres
+* kubernetes_ingress
 * kubernetes_horizontal_pod_autoscaler
 * kubernetes_job
 * kubernetes_namespace
