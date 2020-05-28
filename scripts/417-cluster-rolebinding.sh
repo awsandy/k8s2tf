@@ -1,16 +1,11 @@
 ttft="kubernetes_cluster_role_binding"
-ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
-#echo $ans
-#ans="default"
-for ns in $ans; do
-    ns=`echo $ns | tr -d '"'`
-    #if [[ "$ns" != kube-* ]]; then
-        echo "namespace = $ns"
-        comm=`kubectl get clusterrolebinding -n $ns -o json | jq .items[].metadata.name`
+
+        comm=`kubectl get clusterrolebinding -o json | jq .items[].metadata.name`
         #echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
             echo $cname
+            if [[ ${cname} != *":"* ]] ;then
             fn=`printf "%s__%s.tf" $ttft $cname`
             printf "resource \"%s\" \"%s\" {" $ttft $cname > $fn
             printf "}\n" >> $fn
@@ -55,8 +50,9 @@ for ns in $ans; do
             done <"$file"
             #sed -i .bak 's/<<~/<</g' $fn
             rm -f *.tf.bak
+            else
+            echo "Skipping $cname"
+            fi
         done
-    #fi
-done
 exit
 terraform fmt
