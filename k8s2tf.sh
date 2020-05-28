@@ -19,7 +19,7 @@ printf "provider \"kubernetes\" {}\n" > k8s.tf
 
 terraform init
 
-pre="417*"
+pre="440*"
 t="*"
 
 date
