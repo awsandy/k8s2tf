@@ -54,7 +54,7 @@ for ns in $ans; do
                 fi
                 
             done <"$file"
-            #sed -i bak 's/<<~/<</g' $fn
+            #sed -i 's/<<~/<</g' $fn
             rm -f *.tf.bak
         done
     fi
