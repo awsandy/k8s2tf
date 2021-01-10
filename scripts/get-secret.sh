@@ -45,6 +45,7 @@ for ns in $ans; do
                     if [[ ${tt1} == "mount_path" ]];then
                         printf "mount_propagation = \"None\"\n" >> $fn
                     fi
+                    if [[ ${tt1} == "data" ]];then skip=1; fi
 
                 fi
                 if [ "$skip" == "0" ]; then
