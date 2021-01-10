@@ -42,6 +42,7 @@ for ns in $ans; do
                     if [[ ${tt1} == "default_secret_name" ]];then skip=1; fi
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
+                    if [[ ${tt1} == "load_balancer_ingress" ]];then skip=1; fi
                     if [[ ${tt1} == "mount_path" ]];then
                         printf "mount_propagation = \"None\"\n" >> $fn
                     fi
