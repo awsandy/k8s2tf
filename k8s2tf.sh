@@ -19,11 +19,11 @@ fi
 # write the k8s.tf file
 
 printf "terraform {\n" > k8s.tf
-printf "  required_version = \"~> 0.14.3\"\n" >> k8s.tf
+printf "  required_version = \"~> 0.14.7\"\n" >> k8s.tf
 printf "  required_providers {\n" >> k8s.tf
 printf "    kubernetes = {\n" >> k8s.tf
 printf "      source = \"hashicorp/kubernetes\"\n" >> k8s.tf
-printf "      version = \"~>2.0.1\"\n" >> k8s.tf
+printf "      version = \"~>2.0.3\"\n" >> k8s.tf
 printf "    }\n" >> k8s.tf   
 printf "  }\n" >> k8s.tf
 printf "}\n" >> k8s.tf
@@ -32,6 +32,7 @@ printf "provider \"kubernetes\" {\n" >> k8s.tf
 printf "config_path    = \"~/.kube/config\"\n" >> k8s.tf
 printf "}\n" >> k8s.tf
 
+cat k8s.tf
 terraform init
 
 pre="4*"

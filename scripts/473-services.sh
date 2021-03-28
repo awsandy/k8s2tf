@@ -25,7 +25,7 @@ for ns in $ans; do
             rm -f $fn
             cat t2.txt | perl -pe 's/\x1b.*?[mGKH]//g' > t1.txt
             file="t1.txt"
-            
+            wflb=0
             while IFS= read line
             do
 				skip=0
@@ -52,6 +52,10 @@ for ns in $ans; do
                         done 
                         fi
                     fi
+                    if [[ ${tt1} == "wait_for_load_balancer" ]];then 
+                        skip=0;
+                        wflb=1 
+                    fi
 
                     if [[ ${tt1} == "status" ]];then 
                         skip=1
@@ -71,6 +75,13 @@ for ns in $ans; do
                         tt2=`echo $tt2 | tr -d '"'`
                         t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
                     fi
+                else
+                    if [[ "$t1" == *"timeouts"* ]]; then
+                        if [[ ${wflb} == "0" ]];then
+                            echo "wait_for_load_balancer = true" >> $fn
+                        fi
+                    fi
+
 
                 fi
                 if [ "$skip" == "0" ]; then
