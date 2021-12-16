@@ -11,14 +11,15 @@ for ns in $ans; do
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
             echo $cname
-            fn=`printf "%s__%s__%s.tf" $ttft $ns $cname`
-            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $fn
+            rname=${cname//:/_} && rname=${rname//./_} && rname=${rname//\//_}
+            fn=`printf "%s__%s__%s.tf" $ttft $ns $rname`
+            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $rname > $fn
             printf "}\n" >> $fn
             
-            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $cname $ns $cname`
+            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname`
             echo $comm
             eval $comm
-            comm=`printf "terraform state show %s.%s__%s" $ttft $ns $cname`
+            comm=`printf "terraform state show %s.%s__%s" $ttft $ns $rname`
             echo $comm
             eval $comm > t2.txt
             
