@@ -4,11 +4,11 @@
 
 * An EKS cluster
 * kubectl installed with admin access
-* Terraform v 12.24+
+* Terraform v 1.1.0+
 
 ## Usage
 
-./k82tf.sh 
+./k82tf.sh <cluster name>
 
 ## Kubernetes Providers Covered
 
