@@ -93,14 +93,14 @@ echo "--------------------------------------------------------------------------
 echo "Terraform fmt ..."
 terraform fmt
 echo "Terraform validate ..."
-terraform validate .
+terraform validate
 
 if [ "$v" = "yes" ]; then
     exit
 fi
 
 echo "Terraform Plan ..."
-terraform plan .
+terraform plan
 
 
 echo "code in generated/tf.$mycluster"

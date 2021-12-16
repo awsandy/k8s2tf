@@ -16,7 +16,7 @@ for ns in $ans; do
             printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $rname > $fn
             printf "}\n" >> $fn
             
-            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname`
+            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname | grep Import`
             echo $comm
             eval $comm
             comm=`printf "terraform state show %s.%s__%s" $ttft $ns $rname`

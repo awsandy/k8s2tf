@@ -52,6 +52,16 @@ for ns in $ans; do
                         done 
                         fi
                     fi
+
+                    if [[ ${tt1} == "health_check_node_port" ]];then
+                        skip=0;
+                        if [[ "$tt2" == "0" ]];then
+                            skip=1
+                        fi
+                    fi
+
+
+
                     if [[ ${tt1} == "wait_for_load_balancer" ]];then 
                         skip=0;
                         wflb=1 
