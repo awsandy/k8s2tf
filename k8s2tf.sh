@@ -148,7 +148,24 @@ printf "config_path    = \"~/.kube/config\"\n" >> k8s.tf
 printf "}\n" >> k8s.tf
 
 cat k8s.tf
-terraform init
+
+if [ "$c" == "no" ]; then
+    echo "terraform init -upgrade"
+    terraform init -upgrade -no-color 2>&1 | tee -a import.log
+    if [[ $? -ne 0 ]];then 
+        echo "Terraform INit failed - exiting ....."
+        exit
+    fi
+else
+    if [[ ! -d .terraform ]]; then
+        echo ""
+        echo "There doesn't appear to be a previous run for aws2tf"
+        echo "missing .terraform directory in $mysub"
+        echo "exiting ....."
+        exit
+    fi
+fi
+pwd
 
 pre="4*"
 t="*"
