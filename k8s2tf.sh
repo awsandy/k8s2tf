@@ -32,9 +32,6 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:n:cl:" o; do
     i)
         i=${OPTARG}
         ;;
-    cl)
-        cl=${OPTARG}
-        ;;
     t)
         t=${OPTARG}
         ;;
@@ -54,7 +51,7 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:n:cl:" o; do
         v="yes"
         ;;
     c)
-        c="yes"
+        c=${OPTARG}
         ;;
     d)
         d=${OPTARG}
@@ -62,7 +59,6 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:n:cl:" o; do
     n)
         n=${OPTARG}
         ;;
-
     *)
         usage
         ;;
