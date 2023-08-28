@@ -24,7 +24,7 @@ c="no" # combine mode
 d="no"
 n="no"
 
-while getopts ":p:r:x:f:v:t:i:c:d:h:s:" o; do
+while getopts ":p:r:x:f:v:t:i:c:d:h:s:cl:" o; do
     case "${o}" in
     h)
         usage
