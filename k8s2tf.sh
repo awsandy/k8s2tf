@@ -164,7 +164,7 @@ lc=0
 echo "t=$t pre=$pre"
 echo "loop through providers"
 pwd
-exit
+
 for com in $(ls ../../scripts/$pre-*$t*.sh | cut -d'/' -f4 | sort -g); do
     #echo "$com"
     docomm=". ../../scripts/$com $n"
