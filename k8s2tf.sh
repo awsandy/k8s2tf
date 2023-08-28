@@ -20,7 +20,6 @@ p="default" # profile
 f="no"
 v="no"
 r="no" # region
-c="no" # combine mode
 d="no"
 n="no"
 
