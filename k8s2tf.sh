@@ -109,7 +109,7 @@ if [ "$r" = "no" ]; then
     fi
 fi
 
-if [ "$t" == "no" ]; then t="*"; fi
+#if [ "$t" == "no" ]; then t="*"; fi
 
 
 
@@ -166,7 +166,7 @@ else
     fi
 fi
 pwd
-
+echo "t=$t pre=$pre"
 pre="4*"
 if [[ "$t" == "configmap" ]]; then pre="404*"; fi
 
