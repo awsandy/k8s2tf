@@ -26,7 +26,6 @@ for ns in $ans; do
         echo $ticomm
         
         eval $ticomm
-        exit
         tscomm=$(printf "terraform state show -no-color %s.%s__%s" $ttft $ns $rname)
         echo $tscomm
         eval $tscomm >t1.txt
