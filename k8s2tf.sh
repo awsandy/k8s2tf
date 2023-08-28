@@ -66,18 +66,12 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:n:cl:" o; do
 done
 shift $((OPTIND - 1))
 
-
-
-echo "t=$t c=$c n=$n"
-exit
-
 trap ctrl_c INT
 
 function ctrl_c() {
     echo "Requested to stop."
     exit 1
 }
-
 
 if [ "$d" = "info" ]; then
     set -x
@@ -116,12 +110,10 @@ fi
 
 #if [ "$t" == "no" ]; then t="*"; fi
 
-
-
-if [ "$cl" == "" ]; then
-echo "EKS cluster name must be supplied" && exit
+if [ "$c" == "" ]; then
+    echo "EKS cluster name must be supplied with -c " && exit
 fi
-mycluster=$cl
+mycluster=$(echo $c)
 f="no"
 mkdir -p generated/tf.$mycluster
 cd generated/tf.$mycluster
@@ -133,49 +125,40 @@ if [ "$f" = "no" ]; then
     rm -f terraform.*
     rm -rf .terraform
 else
-    sort -u processed.txt > pt.txt
+    sort -u processed.txt >pt.txt
     cp pt.txt processed.txt
 fi
 # write the k8s.tf file
 
-printf "terraform {\n" > k8s.tf
-printf "  required_version = \"~> 1.5.0\"\n" >> k8s.tf
-printf "  required_providers {\n" >> k8s.tf
-printf "    kubernetes = {\n" >> k8s.tf
-printf "      source = \"hashicorp/kubernetes\"\n" >> k8s.tf
-printf "      version = \"~>2.23.0\"\n" >> k8s.tf
-printf "    }\n" >> k8s.tf   
-printf "  }\n" >> k8s.tf
-printf "}\n" >> k8s.tf
+printf "terraform {\n" >k8s.tf
+printf "  required_version = \"~> 1.5.0\"\n" >>k8s.tf
+printf "  required_providers {\n" >>k8s.tf
+printf "    kubernetes = {\n" >>k8s.tf
+printf "      source = \"hashicorp/kubernetes\"\n" >>k8s.tf
+printf "      version = \"~>2.23.0\"\n" >>k8s.tf
+printf "    }\n" >>k8s.tf
+printf "  }\n" >>k8s.tf
+printf "}\n" >>k8s.tf
 
-printf "provider \"kubernetes\" {\n" >> k8s.tf
-printf "config_path    = \"~/.kube/config\"\n" >> k8s.tf
-printf "}\n" >> k8s.tf
+printf "provider \"kubernetes\" {\n" >>k8s.tf
+printf "config_path    = \"~/.kube/config\"\n" >>k8s.tf
+printf "}\n" >>k8s.tf
 
 cat k8s.tf
 
-if [ "$c" == "no" ]; then
-    echo "terraform init -upgrade"
-    terraform init -upgrade -no-color 2>&1 | tee -a import.log
-    if [[ $? -ne 0 ]];then 
-        echo "Terraform INit failed - exiting ....."
-        exit
-    fi
-else
-    if [[ ! -d .terraform ]]; then
-        echo ""
-        echo "There doesn't appear to be a previous run for aws2tf"
-        echo "missing .terraform directory in $mysub"
-        echo "exiting ....."
-        exit
-    fi
+echo "terraform init -upgrade"
+terraform init -upgrade -no-color 2>&1 | tee -a import.log
+if [[ $? -ne 0 ]]; then
+    echo "Terraform INit failed - exiting ....."
+    exit
 fi
+
 pwd
 echo "t=$t pre=$pre"
 pre="4*"
 if [[ "$t" == "configmap" ]]; then pre="404*"; fi
 
-
+echo "t=$t c=$c n=$n"
 date
 
 lc=0
@@ -183,47 +166,43 @@ echo "t=$t pre=$pre"
 echo "loop through providers"
 pwd
 exit
-for com in `ls ../../scripts/$pre-*$t*.sh | cut -d'/' -f4 | sort -g`; do    
-        echo "$com"
-        docomm=". ../../scripts/$com $n"
-        if [ "$f" = "no" ]; then
-            eval $docomm 2>&1 | tee -a import.log
+for com in $(ls ../../scripts/$pre-*$t*.sh | cut -d'/' -f4 | sort -g); do
+    echo "$com"
+    docomm=". ../../scripts/$com $n"
+    if [ "$f" = "no" ]; then
+        eval $docomm 2>&1 | tee -a import.log
+    else
+        grep "$docomm" processed.txt
+        if [ $? -eq 0 ]; then
+            echo "skipping $docomm"
         else
-            grep "$docomm" processed.txt
-            if [ $? -eq 0 ]; then
-                echo "skipping $docomm"
+            eval $docomm 2>&1 | tee -a import.log
+        fi
+    fi
+    lc=$(expr $lc + 1)
+
+    file="import.log"
+    while IFS= read -r line; do
+        if [[ "${line}" == *"Error"* ]]; then
+
+            if [[ "${line}" == *"Duplicate"* ]]; then
+                echo "Ignoring $line"
             else
-                eval $docomm 2>&1 | tee -a import.log
+                echo "Found Error: $line exiting .... (pass for now)"
+                pass
             fi
         fi
-        lc=`expr $lc + 1`
 
-        file="import.log"
-        while IFS= read -r line
-        do
-            if [[ "${line}" == *"Error"* ]];then
-          
-                if [[ "${line}" == *"Duplicate"* ]];then
-                    echo "Ignoring $line"
-                else
-                    echo "Found Error: $line exiting .... (pass for now)"
-                    pass
-                fi
-            fi
+    done <"$file"
 
-        done <"$file"
+    echo "$docomm" >>processed.txt
 
-        echo "$docomm" >> processed.txt
-        
-    
     rm -f terraform*.backup
 done
 
 #########################################################################
 
-
 date
-
 
 echo "---------------------------------------------------------------------------"
 echo "aws2tf output files are in generated/tf.$mycluster"
@@ -240,6 +219,5 @@ fi
 
 echo "Terraform Plan ..."
 terraform plan
-
 
 echo "code in generated/tf.$mycluster"
