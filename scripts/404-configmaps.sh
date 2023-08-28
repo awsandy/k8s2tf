@@ -18,7 +18,8 @@ for ns in $ans; do
         echo "configmap $cname in namecpace $ns"
         rname=${cname//:/_} && rname=${rname//./_} && rname=${rname//\//_}
         fn=$(printf "%s__%s__%s.tf" $ttft $ns $rname)
-        printf "resource \"%s\" \"%s__%s\" {}" $ttft $ns $rname >$fn
+        printf "resource \"%s\" \"%s__%s\" {\n" $ttft $ns $rname >$fn
+        printf "}\n" $ttft $ns $rname >$fn
 
         ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname)
         echo "----------->"
