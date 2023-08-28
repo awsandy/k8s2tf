@@ -21,7 +21,7 @@ f="no"
 v="no"
 r="no" # region
 d="no"
-n="no"
+n=""
 
 while getopts ":p:r:x:f:v:t:i:c:d:h:n:cl:" o; do
     case "${o}" in
