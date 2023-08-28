@@ -170,7 +170,7 @@ pwd
 pre="4*"
 t="*"
 
-if [ "$t" == "configmap" ]; then pre="404*"; fi
+if [[ "$t" == "configmap" []]; then pre="404*"; fi
 
 
 date
@@ -179,6 +179,7 @@ lc=0
 echo "t=$t"
 echo "loop through providers"
 pwd
+exit
 for com in `ls ../../scripts/$pre-*$t*.sh | cut -d'/' -f4 | sort -g`; do    
         echo "$com"
         docomm=". ../../scripts/$com $n"
