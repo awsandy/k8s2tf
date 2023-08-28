@@ -168,8 +168,6 @@ fi
 pwd
 
 pre="4*"
-t="*"
-
 if [[ "$t" == "configmap" ]]; then pre="404*"; fi
 
 
