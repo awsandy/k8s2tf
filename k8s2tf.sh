@@ -68,7 +68,7 @@ shift $((OPTIND - 1))
 
 
 
-echo "t=$t cl=$cl n=$n"
+echo "t=$t c=$c n=$n"
 exit
 
 trap ctrl_c INT
