@@ -11,7 +11,8 @@ for ns in $ans; do
     #   if [[ "$ns" != kube-* ]]; then
     echo "namespace=$ns"
     comm=$(kubectl get configmaps -n $ns -o json | jq .items[].metadata.name)
-    echo "comm=$comm"
+    echo "configmaps ...."
+    echo "$comm"
     for i in $comm; do
         cname=$(echo $i | tr -d '"')
         echo "configmap $cname in namecpace $ns"
@@ -20,6 +21,7 @@ for ns in $ans; do
         printf "resource \"%s\" \"%s__%s\" {}" $ttft $ns $rname >$fn
 
         ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname | grep Import)
+        echo "----------->"
         echo $ticomm
         eval $ticomm
         tscomm=$(printf "terraform state show -no-color %s.%s__%s" $ttft $ns $rname)
