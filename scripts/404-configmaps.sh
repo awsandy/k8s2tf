@@ -1,5 +1,9 @@
-ttft="kubernetes_config_map"
+ttft="kubernetes_config_map_v1"
+if [[ $1 != "" ]]; then
+ans=$(echo $1)
+else
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
+fi
 #echo $ans
 #ans="default"
 for ns in $ans; do
@@ -7,14 +11,14 @@ for ns in $ans; do
 #   if [[ "$ns" != kube-* ]]; then
         echo "namespace = $ns"
         comm=`kubectl get configmaps -n $ns -o json | jq .items[].metadata.name`
-        #echo "comm=$comm"
+        echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
             echo $cname
             rname=${cname//:/_} && rname=${rname//./_} && rname=${rname//\//_}
             fn=`printf "%s__%s__%s.tf" $ttft $ns $rname`
-            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $rname > $fn
-            printf "}\n" >> $fn
+            printf "resource \"%s\" \"%s__%s\" {}" $ttft $ns $rname > $fn
+      
             
             comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname | grep Import`
             echo $comm
