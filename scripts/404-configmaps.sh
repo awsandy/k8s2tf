@@ -20,9 +20,10 @@ for ns in $ans; do
         fn=$(printf "%s__%s__%s.tf" $ttft $ns $rname)
         printf "resource \"%s\" \"%s__%s\" {}" $ttft $ns $rname >$fn
 
-        ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname | grep Import)
+        ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname)
         echo "----------->"
         echo $ticomm
+        exit
         eval $ticomm
         tscomm=$(printf "terraform state show -no-color %s.%s__%s" $ttft $ns $rname)
         echo $tscomm
