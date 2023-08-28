@@ -19,7 +19,7 @@ fi
 # write the k8s.tf file
 
 printf "terraform {\n" > k8s.tf
-printf "  required_version = \"~> 1.1.0\"\n" >> k8s.tf
+printf "  required_version = \"~> 1.5.0\"\n" >> k8s.tf
 printf "  required_providers {\n" >> k8s.tf
 printf "    kubernetes = {\n" >> k8s.tf
 printf "      source = \"hashicorp/kubernetes\"\n" >> k8s.tf
