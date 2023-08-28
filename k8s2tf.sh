@@ -70,6 +70,11 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:s:cl:" o; do
 done
 shift $((OPTIND - 1))
 
+
+
+echo "t=$t cl=$cl n=$n"
+exit
+
 trap ctrl_c INT
 
 function ctrl_c() {
