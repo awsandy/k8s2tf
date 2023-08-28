@@ -4,30 +4,30 @@ if [[ $1 != "" ]]; then
 else
     ans=$(kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"')
 fi
-echo "ans=$ans"
+#echo "ans=$ans"
 #ans="default"
 for ns in $ans; do
     ns=$(echo $ns | tr -d '"')
     #   if [[ "$ns" != kube-* ]]; then
-    echo "namespace=$ns"
+    #echo "namespace=$ns"
     comm=$(kubectl get configmaps -n $ns -o json | jq .items[].metadata.name)
-    echo "configmaps ...."
-    echo "$comm"
+    #echo "configmaps ...."
+    #echo "$comm"
     for i in $comm; do
         cname=$(echo $i | tr -d '"')
-        echo "configmap $cname in namecpace $ns"
+        #echo "configmap $cname in namecpace $ns"
         rname=${cname//:/_} && rname=${rname//./_} && rname=${rname//\//_}
         fn=$(printf "%s__%s__%s.tf" $ttft $ns $rname)
         printf "resource \"%s\" \"%s__%s\" {\n" $ttft $ns $rname >$fn
         printf "}\n" $ttft $ns $rname >>$fn
 
         ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname)
-        echo "----------->"
-        echo $ticomm
+        #echo "----------->"
+        #echo $ticomm
         
         eval $ticomm
         tscomm=$(printf "terraform state show -no-color %s.%s__%s" $ttft $ns $rname)
-        echo $tscomm
+        #echo $tscomm
         eval $tscomm >t1.txt
 
         rm -f $fn
