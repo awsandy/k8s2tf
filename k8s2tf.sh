@@ -7,6 +7,7 @@ usage() {
     echo "       -v <yes|no> (default=no) Stop after terraform validate step"
     echo "       -h           Help - this message"
     echo "       -d <yes|no|st|info> (default=no)   Debug - lots of output if info"
+    echo "       -cl <cluster> which namespace to use"
     echo "       -n <namespace> which namespace to use"
     echo "       -t <type>   choose a sub-type of K8s resources to get:"
     echo "           configmap"
@@ -30,6 +31,9 @@ while getopts ":p:r:x:f:v:t:i:c:d:h:s:" o; do
         ;;
     i)
         i=${OPTARG}
+        ;;
+    cl)
+        cl=${OPTARG}
         ;;
     t)
         t=${OPTARG}
@@ -113,10 +117,10 @@ fi
 
 
 
-if [ "$1" == "" ]; then
+if [ "$cl" == "" ]; then
 echo "EKS cluster name must be supplied" && exit
 fi
-mycluster=$1
+mycluster=$cl
 f="no"
 mkdir -p generated/tf.$mycluster
 cd generated/tf.$mycluster
