@@ -170,13 +170,13 @@ pwd
 pre="4*"
 t="*"
 
-if [[ "$t" == "configmap" []]; then pre="404*"; fi
+if [[ "$t" == "configmap" ]]; then pre="404*"; fi
 
 
 date
 
 lc=0
-echo "t=$t"
+echo "t=$t pre=$pre"
 echo "loop through providers"
 pwd
 exit
