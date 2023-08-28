@@ -24,8 +24,9 @@ for ns in $ans; do
         ticomm=$(printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname)
         echo "----------->"
         echo $ticomm
-        exit
+        
         eval $ticomm
+        exit
         tscomm=$(printf "terraform state show -no-color %s.%s__%s" $ttft $ns $rname)
         echo $tscomm
         eval $tscomm >t1.txt
