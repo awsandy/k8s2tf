@@ -7,9 +7,9 @@ usage() {
     echo "       -v <yes|no> (default=no) Stop after terraform validate step"
     echo "       -h           Help - this message"
     echo "       -d <yes|no|st|info> (default=no)   Debug - lots of output if info"
-    echo "       -cl <cluster> which namespace to use"
+    echo "       -cl <cluster> EKS cluster"
     echo "       -n <namespace> which namespace to use"
-    echo "       -t <type>   choose a sub-type of K8s resources to get:"
+    echo "       -t <type>  choose a sub-type of K8s resources to get:"
     echo "           configmap"
     echo "           serviceaccount"
     exit 1
