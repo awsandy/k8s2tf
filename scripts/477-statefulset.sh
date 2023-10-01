@@ -1,15 +1,15 @@
-ttft="kubernetes_deployment_v1"
+ttft="kubernetes_stateful_set_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
 for ns in $ans; do
-    ns=`echo $ns | tr -d '"'`
     if [[ $1  != "" ]]; then
         if [[ $1 != $ns ]]; then continue;fi 
     fi
+    ns=`echo $ns | tr -d '"'`
     if [[ "$ns" != kube-* ]]; then
         echo "namespace = $ns"
-        comm=`kubectl get deployments -n $ns -o json | jq .items[].metadata.name`
+        comm=`kubectl get statefulset -n $ns -o json | jq .items[].metadata.name`
         #echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
@@ -28,7 +28,7 @@ for ns in $ans; do
             rm -f $fn
             cat t2.txt | perl -pe 's/\x1b.*?[mGKH]//g' > t1.txt
             file="t1.txt"
-            
+            wflb=0
             while IFS= read line
             do
 				skip=0
@@ -44,18 +44,45 @@ for ns in $ans; do
                     if [[ ${tt1} == "resource_version" ]];then skip=1; fi             
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
-                    if [[ ${tt1} == "ttl_seconds_after_finished" ]];then skip=1; fi
-                    #if [[ ${tt1} == "mount_path" ]];then
-                    #    printf "mount_propagation = \"None\"\n" >> $fn
-                    #fi
+                    if [[ ${tt1} == "load_balancer_ingress" ]];then 
+                        skip=1
+                        #echo "tt2=$tt2"
+                        if [[ "$tt2" != "[]" ]]; then
+                        while [[ "$t1" != "]" ]] ;do
+                            read line
+                            t1=`echo "$line"`
+                            #echo $t1
+                        done 
+                        fi
+                    fi
+
+                    if [[ ${tt1} == "host_port" ]];then
+                        skip=0;
+                        if [[ "$tt2" == "0" ]];then
+                            skip=1
+                        fi
+                    fi
+
+                    if [[ ${tt1} == "status" ]];then 
+                        skip=1
+                        lbc=0
+                        rbc=0
+                        breq=0
+                        while [[ $breq -eq 0 ]];do 
+                            if [[ "${t1}" == *"["* ]]; then lbc=`expr $lbc + 1`; fi
+                            if [[ "${t1}" == *"]"* ]]; then rbc=`expr $rbc + 1`; fi
+                            read line
+                            t1=`echo "$line"`
+                            if [[ $rbc -eq $lbc ]]; then breq=1; fi
+                        done 
+                    fi
+
                     if [[ ${tt1} == "vpc_id" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
                         t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
                     fi
-                    if [[ ${tt1} == "host_port" ]]; then
-                        tt2=`echo $tt2 | tr -d '"'`
-                            if [[ ${tt2} == "0" ]]; then skip=1; fi
-                    fi
+
+
 
                 fi
                 if [ "$skip" == "0" ]; then
@@ -64,9 +91,10 @@ for ns in $ans; do
                 fi
                 
             done <"$file"
-            sed -i 's/<<~/<</g' $fn
-            # -f *.tf.bak
+            #sed -i 's/<<~/<</g' $fn
+            rm -f *.tf.bak
         done
     fi
 done
+exit
 terraform fmt

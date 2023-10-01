@@ -3,6 +3,9 @@ ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
 for ns in $ans; do
+    if [[ $1  != "" ]]; then
+        if [[ $1 != $ns ]]; then continue;fi 
+    fi
     ns=`echo $ns | tr -d '"'`
     if [[ "$ns" != kube-* ]]; then
         echo "namespace = $ns"

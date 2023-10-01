@@ -2,6 +2,9 @@ pwd
 ttft="kubernetes_namespace"
 kmaps=`kubectl get namespaces -o json | jq .items[].metadata.name`
 for i in $kmaps; do
+    if [[ $1 != "" ]]; then
+        if [[ $1 != $ns ]]; then continue; fi
+    fi
     echo $i
     cname=`echo $i | tr -d '"'`
     printf "resource \"%s\" \"%s\" {" $ttft $cname > $ttft.$cname.tf

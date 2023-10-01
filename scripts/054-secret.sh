@@ -1,19 +1,21 @@
-ttft="kubernetes_deployment_v1"
+ttft="kubernetes_secret_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
 for ns in $ans; do
     ns=`echo $ns | tr -d '"'`
-    if [[ $1  != "" ]]; then
-        if [[ $1 != $ns ]]; then continue;fi 
+    if [[ $1 != "" ]]; then
+        if [[ $1 != $ns ]]; then continue; fi
     fi
     if [[ "$ns" != kube-* ]]; then
         echo "namespace = $ns"
-        comm=`kubectl get deployments -n $ns -o json | jq .items[].metadata.name`
+        comm=`kubectl get secret -n $ns -o json | jq '.items[].metadata.name'`
         #echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
             echo $cname
+            un=$(kubectl get secret $cname -n $ns -o json | jq '.data.username' | tr -d '"') 
+            pw=$(kubectl get secret $cname -n $ns -o json | jq '.data.password' | tr -d '"')
             fn=`printf "%s__%s__%s.tf" $ttft $ns $cname`
             printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $fn
             printf "}\n" >> $fn
@@ -42,19 +44,22 @@ for ns in $ans; do
                     if [[ ${tt1} == "self_link" ]];then skip=1; fi
                     if [[ ${tt1} == "uid" ]];then skip=1; fi 
                     if [[ ${tt1} == "resource_version" ]];then skip=1; fi             
+                    if [[ ${tt1} == "default_secret_name" ]];then skip=1; fi
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
-                    if [[ ${tt1} == "ttl_seconds_after_finished" ]];then skip=1; fi
-                    #if [[ ${tt1} == "mount_path" ]];then
-                    #    printf "mount_propagation = \"None\"\n" >> $fn
-                    #fi
-                    if [[ ${tt1} == "vpc_id" ]]; then
-                        tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
+                    if [[ ${tt1} == "mount_path" ]];then
+                        printf "mount_propagation = \"None\"\n" >> $fn
                     fi
-                    if [[ ${tt1} == "host_port" ]]; then
-                        tt2=`echo $tt2 | tr -d '"'`
-                            if [[ ${tt2} == "0" ]]; then skip=1; fi
+                    if [[ ${tt1} == "data" ]];then 
+                        if [[ ${un} == "null" ]];then 
+                             skip=1;
+                        else    
+                            printf "data = {\n" >> $fn
+                            printf "username = \"${un}\"\n" >> $fn
+                            printf "password = \"${pw}\"\n" >> $fn
+                            printf "}\n" >> $fn 
+                            skip=1
+                        fi
                     fi
 
                 fi
@@ -64,9 +69,10 @@ for ns in $ans; do
                 fi
                 
             done <"$file"
-            sed -i 's/<<~/<</g' $fn
-            # -f *.tf.bak
+            #sed -i 's/<<~/<</g' $fn
+            rm -f *.tf.bak
         done
     fi
 done
+exit
 terraform fmt

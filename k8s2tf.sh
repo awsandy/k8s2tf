@@ -181,6 +181,8 @@ if [[ "$t" == "service" ]]; then pre="473*"; fi
 if [[ "$t" == "ingress" ]]; then pre="475*"; fi
 if [[ "$t" == "hpa" ]]; then pre="480*"; fi
 if [[ "$t" == "job" ]]; then pre="490*"; fi
+if [[ "$t" == "secret" ]]; then pre="054*"; fi
+if [[ "$t" == "statefulset" ]]; then pre="477*"; fi
 
 
 
