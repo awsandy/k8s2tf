@@ -167,13 +167,16 @@ fi
 pwd
 echo "t=$t pre=$pre"
 pre="4*"
+
+if [[ "$t" == "clusterrolebinding" ]]; then pre="051*"; fi
+if [[ "$t" == "clusterrole" ]]; then pre="050*"; fi
+
+if [[ "$t" == "secret" ]]; then pre="401*"; fi
 if [[ "$t" == "configmap" ]]; then pre="404*"; fi
 if [[ "$t" == "serviceaccount" ]]; then pre="410*"; fi
 if [[ "$t" == "namespace" ]]; then pre="402*"; fi
 if [[ "$t" == "role" ]]; then pre="412*"; fi
 if [[ "$t" == "rolebinding" ]]; then pre="413*"; fi
-if [[ "$t" == "clusterrolebinding" ]]; then pre="417*"; fi
-if [[ "$t" == "clusterrole" ]]; then pre="415*"; fi
 if [[ "$t" == "daemonset" ]]; then pre="420*"; fi
 if [[ "$t" == "networkpolicy" ]]; then pre="430*"; fi
 if [[ "$t" == "deployment" ]]; then pre="472*"; fi
@@ -181,7 +184,6 @@ if [[ "$t" == "service" ]]; then pre="473*"; fi
 if [[ "$t" == "ingress" ]]; then pre="475*"; fi
 if [[ "$t" == "hpa" ]]; then pre="480*"; fi
 if [[ "$t" == "job" ]]; then pre="490*"; fi
-if [[ "$t" == "secret" ]]; then pre="054*"; fi
 if [[ "$t" == "statefulset" ]]; then pre="477*"; fi
 
 
