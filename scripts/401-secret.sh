@@ -19,7 +19,7 @@ for ns in $ans; do
             un=$(kubectl get secret $cname -n $ns -o json | jq '.data.username' | tr -d '"') 
             pw=$(kubectl get secret $cname -n $ns -o json | jq '.data.password' | tr -d '"')
             fn=`printf "%s__%s__%s.tf" $ttft $ns $cname`
-            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $fn
+            printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $rname > $fn
             printf "}\n" >> $fn
             
             comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname`
