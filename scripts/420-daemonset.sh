@@ -1,4 +1,4 @@
-ttft="kubernetes_daemonset"
+ttft="kubernetes_daemon_set_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
@@ -42,9 +42,6 @@ for ns in $ans; do
                     if [[ ${tt1} == "default_secret_name" ]];then skip=1; fi
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
-                    if [[ ${tt1} == "mount_path" ]];then
-                        printf "mount_propagation = \"None\"\n" >> $fn
-                    fi
 
                 fi
                 if [ "$skip" == "0" ]; then
