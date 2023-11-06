@@ -13,6 +13,8 @@ for ns in $ans; do
         #echo "comm=$comm"
         for i in $comm; do
             cname=`echo $i | tr -d '"'`
+            rname=${cname//:/_} && rname=${rname//./_} && rname=${rname//\//_}
+
             echo $cname
             un=$(kubectl get secret $cname -n $ns -o json | jq '.data.username' | tr -d '"') 
             pw=$(kubectl get secret $cname -n $ns -o json | jq '.data.password' | tr -d '"')
@@ -20,10 +22,10 @@ for ns in $ans; do
             printf "resource \"%s\" \"%s__%s\" {" $ttft $ns $cname > $fn
             printf "}\n" >> $fn
             
-            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $cname $ns $cname`
+            comm=`printf "terraform import %s.%s__%s %s/%s" $ttft $ns $rname $ns $cname`
             echo $comm
             eval $comm
-            comm=`printf "terraform state show %s.%s__%s" $ttft $ns $cname`
+            comm=`printf "terraform state show %s.%s__%s" $ttft $ns $rname`
             echo $comm
             eval $comm > t2.txt
             
