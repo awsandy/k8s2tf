@@ -5,7 +5,7 @@ ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 for ns in $ans; do
     ns=`echo $ns | tr -d '"'`
     if [[ "$ns" != kube-* ]]; then
-        echo "namespace = $ns"
+        #echo "namespace = $ns"
         comm=`kubectl get ingress -n $ns -o json | jq .items[].metadata.name`
         #echo "comm=$comm"
         for i in $comm; do
