@@ -4,6 +4,9 @@ ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #ans="default"
 for ns in $ans; do
     ns=`echo $ns | tr -d '"'`
+    if [[ $1  != "" ]]; then
+        if [[ $1 != $ns ]]; then continue;fi 
+    fi
     if [[ "$ns" != kube-* ]]; then
         #echo "namespace = $ns"
         comm=`kubectl get networkpolicy -n $ns -o json | jq .items[].metadata.name`

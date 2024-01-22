@@ -8,6 +8,9 @@ fi
 #ans="default"
 for ns in $ans; do
     ns=$(echo $ns | tr -d '"')
+    if [[ $1  != "" ]]; then
+        if [[ $1 != $ns ]]; then continue;fi 
+    fi
     #   if [[ "$ns" != kube-* ]]; then
     #echo "namespace=$ns"
     comm=$(kubectl get configmaps -n $ns -o json | jq .items[].metadata.name)
