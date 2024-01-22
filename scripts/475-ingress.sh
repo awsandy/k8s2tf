@@ -1,4 +1,4 @@
-ttft="kubernetes_ingress"
+ttft="kubernetes_ingress_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
