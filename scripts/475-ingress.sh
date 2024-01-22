@@ -49,6 +49,15 @@ for ns in $ans; do
                     if [[ ${tt1} == "mount_path" ]];then
                         printf "mount_propagation = \"None\"\n" >> $fn
                     fi
+                    if [[ ${tt1} == "status" ]];then
+                        # skip the block 
+                        tt2=`echo $tt2 | tr -d '"'` 
+                        skip=1
+                        while [ "$t1" != "]" ] && [ "$tt2" != "[]" ] ;do
+                            read line
+                            t1=`echo "$line"`
+                        done
+                    fi
 
                 fi
                 if [ "$skip" == "0" ]; then
