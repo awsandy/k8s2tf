@@ -3,7 +3,7 @@ ttft="kubernetes_namespace"
 kmaps=`kubectl get namespaces -o json | jq .items[].metadata.name`
 for i in $kmaps; do
     if [[ $1 != "" ]]; then
-        if [[ $1 != $ns ]]; then continue; fi
+        if [[ $1 != $ingress ]]; then continue; fi
     fi
     echo "Namespace = $i"
     cname=`echo $i | tr -d '"'`
