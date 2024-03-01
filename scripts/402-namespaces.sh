@@ -2,6 +2,7 @@ pwd
 ttft="kubernetes_namespace_v1"
 kmaps=`kubectl get namespaces -o json | jq .items[].metadata.name`
 for i in $kmaps; do
+    i=$(echo $i | tr -d '"')
     if [[ $1 != "" ]]; then
         if [[ $1 != $i ]]; then 
             echo $1 $i
