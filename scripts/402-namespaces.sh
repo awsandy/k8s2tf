@@ -5,7 +5,7 @@ for i in $kmaps; do
     if [[ $1 != "" ]]; then
         if [[ $1 != $ns ]]; then continue; fi
     fi
-    echo $i
+    echo "Namespace = $i"
     cname=`echo $i | tr -d '"'`
     printf "resource \"%s\" \"%s\" {" $ttft $cname > $ttft.$cname.tf
     printf "}" $cname >> $ttft.$cname.tf
