@@ -1,9 +1,9 @@
 pwd
-ttft="kubernetes_namespace"
+ttft="kubernetes_namespace_v1"
 kmaps=`kubectl get namespaces -o json | jq .items[].metadata.name`
 for i in $kmaps; do
     if [[ $1 != "" ]]; then
-        if [[ $1 != $ingress ]]; then continue; fi
+        if [[ $1 != $i ]]; then continue; fi
     fi
     echo "Namespace = $i"
     cname=`echo $i | tr -d '"'`
