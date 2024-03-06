@@ -5,7 +5,7 @@ for i in $kmaps; do
     i=$(echo $i | tr -d '"')
     if [[ $1 != "" ]]; then
         if [[ $1 != $i ]]; then 
-            echo $1 $i
+            #echo $1 $i
             continue; 
         fi
     fi
