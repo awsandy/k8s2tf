@@ -13,20 +13,19 @@
 ## Kubernetes Providers Covered
 
 
-* kubernetes_cluster_role
-* kubernetes_cluster_role_binding
+* kubernetes_cluster_role_v1
+* kubernetes_cluster_role_binding_v1
 * kubernetes_config_map_v1
 * kubernetes_daemonset_v1
 * kubernetes_deployment_v1
 * kubernetes_endpoints
 * kubernetes_ingress_v1
-* kubernetes_horizontal_pod_autoscaler
+* kubernetes_horizontal_pod_autoscaler_v1
 * kubernetes_job_v1
 * kubernetes_namespace_v1
-* kubernetes_network_policy
-* kubernetes_pod
-* kubernetes_role
-* kubernetes_role_binding
+* kubernetes_network_policy_v1
+* kubernetes_role_v1
+* kubernetes_role_binding_v1
 * kubernetes_service_v1
 * kubernetes_service_account_v1
 * kubernetes_stateful_set_v1
