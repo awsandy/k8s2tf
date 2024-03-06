@@ -92,9 +92,9 @@ for ns in $ans; do
                     fi
                 else
                     if [[ "$t1" == *"timeouts"* ]]; then
-                        #if [[ ${wflb} == "0" ]];then
-                        #    echo "wait_for_load_balancer = true" >> $fn
-                        #fi
+                        if [[ ${wflb} == "0" ]];then
+                            echo "wait_for_load_balancer = true" >> /dev/null
+                        fi
                     fi
 
 
