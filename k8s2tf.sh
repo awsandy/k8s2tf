@@ -146,7 +146,7 @@ printf "  required_version = \"~> 1.5.4\"\n" >>k8s.tf
 printf "  required_providers {\n" >>k8s.tf
 printf "    kubernetes = {\n" >>k8s.tf
 printf "      source = \"hashicorp/kubernetes\"\n" >>k8s.tf
-printf "      version = \"~>2.23.0\"\n" >>k8s.tf
+printf "      version = \"~>2.26.0\"\n" >>k8s.tf
 printf "    }\n" >>k8s.tf
 printf "  }\n" >>k8s.tf
 printf "}\n" >>k8s.tf
