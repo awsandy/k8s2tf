@@ -52,7 +52,7 @@ for ns in $ans; do
                     fi
                     if [[ ${tt1} == "service_account_name" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = kubernetes_service_account_v1.%s.metadata[0].name" $tt1 $tt2`
+                        t1=`printf "%s = kubernetes_service_account_v1.%s__%s.metadata[0].name" $tt1 $ns $tt2`
                     fi
 
                 fi
