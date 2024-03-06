@@ -44,7 +44,7 @@ for ns in $ans; do
                     if [[ ${tt1} == "resource_version" ]];then skip=1; fi             
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
-                    
+
                     if [[ ${tt1} == "namespace" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
                         t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
@@ -92,9 +92,9 @@ for ns in $ans; do
                     fi
                 else
                     if [[ "$t1" == *"timeouts"* ]]; then
-                        if [[ ${wflb} == "0" ]];then
-                            echo "wait_for_load_balancer = true" >> $fn
-                        fi
+                        #if [[ ${wflb} == "0" ]];then
+                        #    echo "wait_for_load_balancer = true" >> $fn
+                        #fi
                     fi
 
 
