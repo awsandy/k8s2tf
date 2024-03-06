@@ -9,7 +9,7 @@ for i in $kmaps; do
             continue; 
         fi
     fi
-    echo "Namespace = $i"
+    #echo "Namespace = $i"
     cname=`echo $i | tr -d '"'`
     printf "resource \"%s\" \"%s\" {" $ttft $cname > $ttft.$cname.tf
     printf "}" $cname >> $ttft.$cname.tf
