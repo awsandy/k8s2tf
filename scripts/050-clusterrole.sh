@@ -1,4 +1,4 @@
-ttft="kubernetes_cluster_role"
+ttft="kubernetes_cluster_role_v1"
 
         comm=`kubectl get clusterrole -o json | jq .items[].metadata.name`
         #echo "comm=$comm"

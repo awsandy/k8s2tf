@@ -1,4 +1,4 @@
-ttft="kubernetes_job"
+ttft="kubernetes_job_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
@@ -47,10 +47,6 @@ for ns in $ans; do
                     if [[ ${tt1} == "ttl_seconds_after_finished" ]];then skip=1; fi
                     if [[ ${tt1} == "mount_path" ]];then
                         printf "mount_propagation = \"None\"\n" >> $fn
-                    fi
-                    if [[ ${tt1} == "vpc_id" ]]; then
-                        tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
                     fi
 
                 fi

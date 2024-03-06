@@ -44,6 +44,10 @@ for ns in $ans; do
                     if [[ ${tt1} == "default_secret_name" ]]; then skip=1; fi
                     if [[ ${tt1} == "generation" ]]; then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]]; then skip=1; fi
+                    if [[ ${tt1} == "namespace" ]]; then
+                        tt2=`echo $tt2 | tr -d '"'`
+                        t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
+                    fi
 
                 fi
                 if [ "$skip" == "0" ]; then

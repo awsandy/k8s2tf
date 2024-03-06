@@ -45,16 +45,14 @@ for ns in $ans; do
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
                     if [[ ${tt1} == "ttl_seconds_after_finished" ]];then skip=1; fi
-                    #if [[ ${tt1} == "mount_path" ]];then
-                    #    printf "mount_propagation = \"None\"\n" >> $fn
-                    #fi
-                    if [[ ${tt1} == "vpc_id" ]]; then
+
+                    if [[ ${tt1} == "namespace" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
+                        t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
                     fi
-                    if [[ ${tt1} == "host_port" ]]; then
+                    if [[ ${tt1} == "service_account_name" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
-                            if [[ ${tt2} == "0" ]]; then skip=1; fi
+                        t1=`printf "%s = kubernetes_service_account_v1.%s.metadata[0].name" $tt1 $tt2`
                     fi
 
                 fi

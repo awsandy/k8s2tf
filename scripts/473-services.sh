@@ -44,6 +44,11 @@ for ns in $ans; do
                     if [[ ${tt1} == "resource_version" ]];then skip=1; fi             
                     if [[ ${tt1} == "generation" ]];then skip=1; fi
                     if [[ ${tt1} == "active_deadline_seconds" ]];then skip=1; fi
+                    
+                    if [[ ${tt1} == "namespace" ]]; then
+                        tt2=`echo $tt2 | tr -d '"'`
+                        t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
+                    fi
                     if [[ ${tt1} == "load_balancer_ingress" ]];then 
                         skip=1
                         #echo "tt2=$tt2"
@@ -55,6 +60,8 @@ for ns in $ans; do
                         done 
                         fi
                     fi
+
+
 
                     if [[ ${tt1} == "health_check_node_port" ]];then
                         skip=0;
@@ -82,11 +89,6 @@ for ns in $ans; do
                             t1=`echo "$line"`
                             if [[ $rbc -eq $lbc ]]; then breq=1; fi
                         done 
-                    fi
-
-                    if [[ ${tt1} == "vpc_id" ]]; then
-                        tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = aws_vpc.%s.id" $tt1 $tt2`
                     fi
                 else
                     if [[ "$t1" == *"timeouts"* ]]; then

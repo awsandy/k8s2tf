@@ -1,4 +1,4 @@
-ttft="kubernetes_network_policy"
+ttft="kubernetes_network_policy_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"

@@ -55,6 +55,10 @@ for ns in $ans; do
                         done 
                         fi
                     fi
+                    if [[ ${tt1} == "namespace" ]]; then
+                        tt2=`echo $tt2 | tr -d '"'`
+                        t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
+                    fi
 
                     if [[ ${tt1} == "host_port" ]];then
                         skip=0;

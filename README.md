@@ -15,24 +15,25 @@
 
 * kubernetes_cluster_role
 * kubernetes_cluster_role_binding
-* kubernetes_config_map
-* kubernetes_daemonset
-* kubernetes_deployment
+* kubernetes_config_map_v1
+* kubernetes_daemonset_v1
+* kubernetes_deployment_v1
 * kubernetes_endpoints
-* kubernetes_ingress
+* kubernetes_ingress_v1
 * kubernetes_horizontal_pod_autoscaler
-* kubernetes_job
-* kubernetes_namespace
+* kubernetes_job_v1
+* kubernetes_namespace_v1
 * kubernetes_network_policy
 * kubernetes_pod
 * kubernetes_role
 * kubernetes_role_binding
-* kubernetes_service
-* kubernetes_service_account
+* kubernetes_service_v1
+* kubernetes_service_account_v1
+* kubernetes_stateful_set_v1
 
 ### partial (difficulties)
 
-* kubernetes_secret
+* kubernetes_secret_v1
 
 ## To do 
 * kubernetes_api_service 
@@ -44,5 +45,4 @@
 * kubernetes_priority_class
 * kubernetes_replication_controller
 * kubernetes_resource_quota
-* kubernetes_stateful_set
 * kubernetes_storage_class

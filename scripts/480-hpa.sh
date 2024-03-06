@@ -1,4 +1,4 @@
-ttft="kubernetes_horizontal_pod_autoscaler"
+ttft="kubernetes_horizontal_pod_autoscaler_v1"
 ans=`kubectl get namespaces -o json | jq .items[].metadata.name | tr -d '"'`
 #echo $ans
 #ans="default"
