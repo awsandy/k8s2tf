@@ -142,11 +142,14 @@ fi
 # write the k8s.tf file
 
 printf "terraform {\n" >k8s.tf
-printf "  required_version = \"~> 1.5.4\"\n" >>k8s.tf
+printf "  required_version = \">= 1.9.5\"\n" >>k8s.tf
 printf "  required_providers {\n" >>k8s.tf
 printf "    kubernetes = {\n" >>k8s.tf
 printf "      source = \"hashicorp/kubernetes\"\n" >>k8s.tf
-printf "      version = \"~>2.26.0\"\n" >>k8s.tf
+printf "      version = \"~>2.3
+
+
+6.0\"\n" >>k8s.tf
 printf "    }\n" >>k8s.tf
 printf "  }\n" >>k8s.tf
 printf "}\n" >>k8s.tf
@@ -236,7 +239,7 @@ done
 date
 
 echo "---------------------------------------------------------------------------"
-echo "aws2tf output files are in generated/tf.$mycluster"
+echo "k8s2tff output files are in generated/tf.$mycluster"
 echo "---------------------------------------------------------------------------"
 
 echo "Terraform fmt ..."
