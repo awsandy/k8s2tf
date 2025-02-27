@@ -48,7 +48,9 @@ for ns in $ans; do
 
                     if [[ ${tt1} == "namespace" ]]; then
                         tt2=`echo $tt2 | tr -d '"'`
-                        t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
+                        if [[ $tt2 != "null" ]];then
+                            t1=`printf "%s = kubernetes_namespace_v1.%s.metadata[0].name" $tt1 $tt2`
+                        fi
                     fi
 
                     if [[ ${tt1} == "service_account_name" ]]; then
