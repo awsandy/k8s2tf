@@ -59,6 +59,11 @@ for ns in $ans; do
                     tt2=$(echo $tt2 | tr -d '"')
                     t1=$(printf "%s = aws_vpc.%s.id" $tt1 $tt2)
                 fi
+                if [[ ${tt1} == "expr" ]]; then
+                    tt2=$(echo $tt2 | tr -d '"')
+                    tt2=$(sed -i 's/"/\\"/g' $tt2)
+                    t1=$(printf "%s = \"%s\"" $tt1 $tt2)
+                fi
 
             fi
             if [ "$skip" == "0" ]; then
