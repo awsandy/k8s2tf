@@ -60,7 +60,7 @@ for ns in $ans; do
                     t1=$(printf "%s = aws_vpc.%s.id" $tt1 $tt2)
                 fi
                 if [[ ${tt1} == "expr" ]]; then
-                    tt2=$(echo $tt2 | tr -d '"')
+                    #tt2=$(echo $tt2 | tr -d '"')
                     tt2=$(echo $tt2 | sed 's/"/\\"/g')
                     t1=$(printf "%s = \"%s\"" $tt1 $tt2)
                 fi
